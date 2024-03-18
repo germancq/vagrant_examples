@@ -3,6 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# vagrant generated files
+.vagrant/
+*.sol
+*.rb
+
 # C extensions
 *.so
 
