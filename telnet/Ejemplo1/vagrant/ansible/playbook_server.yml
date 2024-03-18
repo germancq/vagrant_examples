@@ -1,0 +1,20 @@
+---
+ - name: Ansible server playbook
+   hosts: all
+   become: true
+   tasks:
+    - name: Update and upgrade apt packages
+      apt:
+            upgrade: yes
+            update_cache: yes
+
+    - name: Ansible install git
+      apt:
+            name: git
+            state: latest
+
+    - name: Ansible install telnetd
+      apt:
+            name: telnetd
+            state: latest
+...

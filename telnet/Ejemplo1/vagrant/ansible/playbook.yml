@@ -1,0 +1,30 @@
+---
+ - name: Ansible apt module examples
+   hosts: all
+   become: true
+   tasks:
+    - name: Update and upgrade apt packages
+      apt:
+            upgrade: yes
+            update_cache: yes
+
+    - name: Ansible install git
+      apt:
+            name: git
+            state: latest
+
+    - name: Ansible install wireshark
+      apt:
+            name: wireshark-qt
+            state: latest
+
+    - name: Ansible install ubuntu-desktop
+      apt:
+            name: ubuntu-desktop
+            state: latest
+
+    - name: Ansible install xinit
+      apt:
+            name: xinit
+            state: latest
+...
