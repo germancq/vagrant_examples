@@ -1,6 +1,6 @@
 ---
  - name: Ansible client playbook
-   hosts: localhost
+   hosts: all
    become: true
    tasks:
     - name: Update and upgrade apt packages
