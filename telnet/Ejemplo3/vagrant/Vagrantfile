@@ -16,50 +16,6 @@ Vagrant.configure("2") do |config|
 
 
 
-  config.vm.define "intruder" do |intruder|
-    intruder.vm.box = "generic/ubuntu2204"
-
-    intruder.vm.hostname = "intruder"
-
-
-    intruder.vm.provider :libvirt do |libvirt|
-      libvirt.cpus = 1
-      libvirt.memory = 1024
-      #libvirt.nic_model_type = "e1000"
-    end
-
-    intruder.vm.provider "virtualbox" do |vbox|
-      vbox.cpus = 1
-      vbox.memory = 1024
-      vbox.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
-      vbox.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
-    end
-
-    intruder.vm.network "private_network",
-        bridge: "eth1",
-        ip: "10.10.10.12",
-        netmask: "255.255.255.0"
-        #:libvirt__forward_mode => "open"
-
-        
-
-    intruder.vm.synced_folder "ansible/", "/home/vagrant/shared",
-      create: true,
-      type: "nfs",
-      nfs_udp: false
-
-
-
-
-    #intruder.vm.provision "ansible_intruder", type: "ansible_local" do |ansible_intruder|
-    #  ansible_intruder.provisioning_path = "/vagrant/ansible"
-    #  ansible_intruder.playbook = "playbook_intruder.yml"
-    #  ansible_intruder.inventory_path = "/vagrant/ansible/hosts"
-    #end
-
-  end
-
-
   config.vm.define "client" do |client|
     client.vm.box = "generic/ubuntu2204"
 
@@ -86,45 +42,45 @@ Vagrant.configure("2") do |config|
       nfs_udp: false
 
 
-    #client.vm.provision "ansible_client", type: "ansible_local" do |ansible_client|
-    #  ansible_client.provisioning_path = "/vagrant/ansible"
-    #  ansible_client.playbook = "playbook_client.yml"
-    #  ansible_client.inventory_path = "/vagrant/ansible/hosts"
-    #end
+    client.vm.provision "ansible_client", type: "ansible_local" do |ansible_client|
+      ansible_client.provisioning_path = "/vagrant/ansible"
+      ansible_client.playbook = "playbook_client.yml"
+      ansible_client.inventory_path = "/vagrant/ansible/hosts"
+    end
   end
 
 
-  config.vm.define "server" do |server|
-    server.vm.box = "generic/ubuntu2204"
+  config.vm.define "webserver" do |webserver|
+    webserver.vm.box = "generic/ubuntu2204"
 
 
-    server.vm.provider :libvirt do |libvirt|
+    webserver.vm.provider :libvirt do |libvirt|
       libvirt.cpus = 1
       libvirt.memory = 1024
     end
 
-    server.vm.provider "virtualbox" do |vbox|
+    webserver.vm.provider "virtualbox" do |vbox|
       vbox.cpus = 1
       vbox.memory = 1024
     end
 
-    server.vm.hostname = "server"
+    webserver.vm.hostname = "webserver"
 
-    server.vm.network "private_network",
+    webserver.vm.network "private_network",
         bridge: "eth1",
         ip: "10.10.10.11",
         netmask: "255.255.255.0"
 
-    server.vm.synced_folder "ansible/", "/vagrant/ansible",
+    webserver.vm.synced_folder "ansible/", "/vagrant/ansible",
       create: true,
       type: "nfs",
       nfs_udp: false
 
-    server.vm.provision "ansible_server", type: "ansible_local" do |ansible_server|
-      ansible_server.provisioning_path = "/vagrant/ansible"
-      ansible_server.limit = "all"
-      ansible_server.playbook = "playbook.yml"
-      ansible_server.inventory_path = "/vagrant/ansible/hosts"
+    webserver.vm.provision "ansible_webserver", type: "ansible_local" do |ansible_webserver|
+      ansible_webserver.provisioning_path = "/vagrant/ansible"
+      ansible_webserver.limit = "all"
+      ansible_webserver.playbook = "playbook_webserver.yml"
+      ansible_webserver.inventory_path = "/vagrant/ansible/hosts"
     end
   end
 

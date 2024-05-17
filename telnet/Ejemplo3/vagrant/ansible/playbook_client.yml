@@ -1,6 +1,6 @@
 ---
- - name: Ansible server playbook
-   hosts: server
+ - name: Ansible client playbook
+   hosts: client
    become: true
    tasks:
     - name: Update and upgrade apt packages
@@ -13,8 +13,8 @@
             name: git
             state: latest
 
-    - name: Ansible install telnetd
+    - name: Install lynx
       apt:
-            name: telnetd
-            state: latest
+        name: lynx
+        state: latest
 ...

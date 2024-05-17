@@ -1,6 +1,6 @@
 ---
- - name: Ansible apt module examples
-   hosts: all
+ - name: Ansible setup server
+   hosts: server
    become: true
    tasks:
     - name: Update and upgrade apt packages
@@ -13,18 +13,101 @@
             name: git
             state: latest
 
-    - name: Ansible install wireshark
+    - name: Ansible install telnetd
       apt:
-            name: wireshark-qt
+            name: telnetd
             state: latest
 
-    - name: Ansible install ubuntu-desktop
-      apt:
+ - name: Ansible setup client
+   hosts: client
+   become: true
+   tasks:
+      - name: Update and upgrade apt packages
+        apt:
+            upgrade: yes
+            update_cache: yes
+
+ - name: Ansible setup Intruder
+   hosts: intruder
+   become: true
+   tasks:
+      - name: Update and upgrade apt packages
+        apt:
+            upgrade: yes
+            update_cache: yes
+
+      - name: Ansible install git
+        apt:
+            name: git
+            state: latest
+
+      - name: shell command to modify debconf
+        ansible.builtin.shell: echo "wireshark-common wireshark-common/install-setuid boolean true" | debconf-set-selections
+
+      - name: install wireshark with noniteractive
+        ansible.builtin.shell: DEBIAN_FRONTEND=noninteractive apt-get -y install wireshark
+
+      #- name: Ansible install wireshark
+      #  apt:
+      #      name: wireshark-qt
+      #      state: latest
+
+      - name: Ansible install tshark
+        apt:
+            name: tshark
+            state: latest
+
+      - name: add user vagrant to wireshark group
+        user:
+            name: vagrant
+            groups: wireshark
+            append: yes
+
+      - name: Ansible install ubuntu-desktop
+        apt:
             name: ubuntu-desktop
             state: latest
 
-    - name: Ansible install xinit
-      apt:
+      - name: Ansible install xinit
+        apt:
             name: xinit
             state: latest
+
+      - name: insert/update block in rc.local
+        blockinfile:
+            path: /etc/rc.local
+            backup: yes
+            create: yes 
+            content: |
+              #!/bin/sh
+              #promiscuous mode required for routing
+              /sbin/ifconfig eth1 up
+              /sbin/ifconfig eth1 promisc
+              exit 0
+      
+      - name: permisos rc.local        
+        ansible.builtin.shell: chmod +x /etc/rc.local
+
+      - name: init rc.local      
+        ansible.builtin.shell: systemctl enable rc-local.service
+
+ - name: Start Capture tshark
+   hosts: intruder
+   become: true
+   tasks:
+      - name: Start Capture tshark
+        ansible.builtin.shell: tshark -i "eth1" --autostop duration:30 -w "/home/vagrant/shared/captura.pcapng" &
+
+ - name: Start telnet comunication
+   hosts: client
+   become: true
+   tasks:
+      - name: Start telnet comunication
+        expect:
+            command: telnet "10.10.10.11"
+            responses:
+                    server login: "vagrant"
+                    Password: "vagrant"
+                    vagrant@server(.*): "exit"
+        ignore_errors: true
 ...

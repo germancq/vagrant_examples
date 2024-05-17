@@ -1,6 +1,6 @@
 ---
  - name: Ansible client playbook
-   hosts: all
+   hosts: client
    become: true
    tasks:
     - name: Update and upgrade apt packages
@@ -23,15 +23,15 @@
             name: tshark
             state: latest
 
-    - name: Ansible initialize tshark
-      ansible.builtin.shell: tshark -i "eth1" --autostop duration:30 -w "/vagrant/ansible/captura.pcapng" &
+    #- name: Ansible initialize tshark
+    #  ansible.builtin.shell: tshark -i "eth1" --autostop duration:30 -w "/vagrant/ansible/captura.pcapng" &
 
     - name: Ansible expect telnet connection
       expect:
             command: telnet "10.10.10.11"
             responses:
-                server login: "vagrant"
-                Password: "vagrant"
-                vagrant@server(.*): "exit"
+                    server login: "vagrant"
+                    Password: "vagrant"
+                    vagrant@server(.*): "exit"
       ignore_errors: true
 ...

@@ -29,15 +29,22 @@
                 ```
                 sudo apt update
 
-                sudo apt install gpg
+                sudo apt install lsb-release
 
-                wget -O- -q https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmour -o /usr/share/keyrings/oracle_vbox_2016.gpg
 
-                echo "deb [arch=amd64 signed-by=/usr/share/keyrings/oracle_vbox_2016.gpg] http://download.virtualbox.org/virtualbox/debian bookworm contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
+                echo "deb http://deb.debian.org/debian $(lsb_release -cs)-backports main contrib" |
+                sudo tee /etc/apt/sources.list.d/backports.list
+
+                sudo apt install fasttrack-archive-keyring
+
+                echo "deb http://fasttrack.debian.net/debian-fasttrack/ $(lsb_release -cs)-fasttrack main contrib" | sudo tee /etc/apt/sources.list.d/fasttrack.list
+                echo "deb http://fasttrack.debian.net/debian-fasttrack/ $(lsb_release -cs)-backports-staging main contrib" | sudo tee -a /etc/apt/sources.list.d/fasttrack.list
 
                 sudo apt update
 
-                sudo apt install virtualbox-7.0
+                sudo apt install virtualbox virtualbox-ext-pack
+
+                sudo apt install virtualbox-guest-utils
 
                 sudo usermod -a -G vboxusers $USER
 
