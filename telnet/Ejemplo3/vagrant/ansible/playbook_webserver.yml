@@ -3,6 +3,9 @@
    hosts: server
    become: true
    tasks:
+    - set_fact:
+        random_n: "{{ 8089 | random(start=8080) }}"
+        run_once: yes  
     - name: Update and upgrade apt packages
       apt:
             upgrade: yes
@@ -26,6 +29,16 @@
         state: latest
         update_cache: true
 
+    - name: remove pip requests
+      pip: 
+        name: requests
+        state: absent
+
+    - name: install pip request 2.31.0
+      pip:
+        name: requests
+        version: 2.31.0
+
     - name: Add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -46,10 +59,18 @@
       pip:
         name: docker
 
-    - name: Pull default Docker image
-      community.docker.docker_image:
+    - name: run docker service
+      service:
+        name: docker
+        state: started
+
+    - name: Pull nginx image
+      docker_image:
         name: nginx
         source: pull
+
+    #- name: pull nginx image cmd
+    #  shell: docker pull nginx
 
     - name: Start container
       community.docker.docker_container:
@@ -57,5 +78,5 @@
         image: nginx
         name: webserver_docker
         ports:
-          - "8080:80"
+          - "{{ random_n }}:80"
 ...
