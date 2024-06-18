@@ -13,12 +13,6 @@
             name: git
             state: latest
 
-    - name: install lubuntu-desktop
-      apt:
-            name: lubuntu-desktop
-            state: latest
-           
-
     - name: create user usuarioCliente
       user:
             name: usuarioCliente

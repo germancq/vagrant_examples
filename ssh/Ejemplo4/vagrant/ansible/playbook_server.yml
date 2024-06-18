@@ -18,10 +18,7 @@
             name: wireshark
             state: latest
 
-    - name: install gui
-      apt:
-            name: lubuntu-desktop
-            state: latest
+
 
     - name: create user usuarioServidor
       user:
