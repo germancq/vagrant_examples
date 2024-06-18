@@ -1,0 +1,39 @@
+---
+ - name: Ansible client playbook
+   hosts: client
+   become: true
+   tasks:
+    - name: Update and upgrade apt packages
+      apt:
+            upgrade: yes
+            update_cache: yes
+
+    - name: Ansible install git
+      apt:
+            name: git
+            state: latest
+
+    - name: install lubuntu-desktop
+      apt:
+            name: lubuntu-desktop
+            state: latest
+           
+
+    - name: create user usuarioCliente
+      user:
+            name: usuarioCliente
+            shell: /bin/bash
+            create_home: yes
+            state: present
+            groups: sudo
+            password: "{{ 'cliente' | password_hash('sha512') }}"
+
+    - name: create user otroCliente
+      user:
+            name: otroCliente
+            shell: /bin/bash
+            create_home: yes
+            state: present
+            groups: sudo
+            password: "{{ 'otro' | password_hash('sha512') }}"
+...
