@@ -3,15 +3,27 @@
    hosts: client
    become: true
    tasks:
-    - name: Update and upgrade apt packages
-      apt:
-            upgrade: yes
-            update_cache: yes
+    #- name: Update and upgrade apt packages
+    #  apt:
+    #        upgrade: yes
+    #        update_cache: yes
 
     - name: Ansible install git
       apt:
             name: git
             state: latest
+
+    - name: set spanish as locale
+      locale_gen:
+            name: es_ES
+            state: present
+
+    - name: set spanish as default locale
+      command: localectl set-locale LANG=es_ES.UTF-8
+
+    - name: set as default x11-keymap Ubuntu
+      command: localectl set-keymap es
+        
 
     - name: create user usuarioCliente
       user:
