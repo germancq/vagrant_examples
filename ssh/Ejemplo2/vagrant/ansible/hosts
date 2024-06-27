@@ -1,0 +1,21 @@
+clients:
+  hosts:
+    client:
+      ansible_host: 10.10.10.10
+      ansible_port: 22
+      ansible_ssh_user: vagrant
+      ansible_ssh_pass: vagrant
+      ansible_become_pass: vagrant
+
+servers:
+  hosts:
+    server:
+      ansible_host: 10.10.10.11
+      ansible_port: 22
+      ansible_ssh_user: vagrant
+      ansible_ssh_pass: vagrant
+      ansible_become_pass: vagrant
+
+
+
+

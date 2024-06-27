@@ -13,6 +13,23 @@
             name: git
             state: latest
 
+    - name: loadkeys es
+      command: loadkeys es
+
+    - name: Modify /etc/vconsole.conf with KEYMAP=es
+      lineinfile:
+        path: /etc/vconsole.conf
+        regexp: '^KEYMAP='
+        line: 'KEYMAP="es"'
+        create: false
+
+    - name: Modify /etc/vconsole.conf with XKBLAYOUT=es
+      lineinfile:
+        path: /etc/vconsole.conf
+        regexp: '^XKBLAYOUT='
+        line: 'XKBLAYOUT="es"'
+        create: false
+
     - name: Ansible install telnetd
       apt:
             name: telnetd

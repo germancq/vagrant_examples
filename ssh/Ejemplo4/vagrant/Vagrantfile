@@ -54,8 +54,8 @@ Vagrant.configure("2") do |config|
   
     config.vm.define "client" do |client|
 
-        client.vm.box = "caspermeijn/ubuntu-desktop-24.04"
-        client.vm.box_version = "2024.05.08"
+      client.vm.box = "caspermeijn/ubuntu-desktop-24.04"
+      client.vm.box_version = "2024.05.08"
 
       #client.vm.provider :libvirt do |libvirt|
       #  libvirt.cpus = 1
