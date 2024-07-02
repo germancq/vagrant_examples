@@ -21,14 +21,14 @@
         path: /etc/vconsole.conf
         regexp: '^KEYMAP='
         line: 'KEYMAP="es"'
-        create: false
+        create: true
 
     - name: Modify /etc/vconsole.conf with XKBLAYOUT=es
       lineinfile:
         path: /etc/vconsole.conf
         regexp: '^XKBLAYOUT='
         line: 'XKBLAYOUT="es"'
-        create: false
+        create: true
 
     - name: Ansible install telnetd
       apt:

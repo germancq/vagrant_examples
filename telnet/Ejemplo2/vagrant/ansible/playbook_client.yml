@@ -31,14 +31,14 @@
         path: /etc/vconsole.conf
         regexp: '^KEYMAP='
         line: 'KEYMAP="es"'
-        create: false
+        create: true
 
     - name: Modify /etc/vconsole.conf with XKBLAYOUT=es
       lineinfile:
         path: /etc/vconsole.conf
         regexp: '^XKBLAYOUT='
         line: 'XKBLAYOUT="es"'
-        create: false
+        create: true
 
     #- name: Ansible initialize tshark
     #  ansible.builtin.shell: tshark -i "eth1" --autostop duration:30 -w "/vagrant/ansible/captura.pcapng" &
