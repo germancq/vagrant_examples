@@ -15,12 +15,7 @@ servers:
       ansible_ssh_user: vagrant
       ansible_ssh_pass: vagrant
       ansible_become_pass: vagrant
-    telnet_server:
-      ansible_host: 10.10.10.12
-      ansible_port: 22
-      ansible_ssh_user: vagrant
-      ansible_ssh_pass: vagrant
-      ansible_become_pass: vagrant
+
 
 
 

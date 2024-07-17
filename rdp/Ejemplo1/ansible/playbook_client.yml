@@ -1,6 +1,6 @@
 ---
- - name: Ansible server playbook
-   hosts: server
+ - name: Ansible client playbook
+   hosts: client
    become: true
    tasks:
     - name: Update and upgrade apt packages
@@ -30,12 +30,21 @@
         line: 'XKBLAYOUT="es"'
         create: true
 
-    - name: create user usuarioServidor
+    - name: create user usuarioCliente
       user:
-            name: usuarioServidor
+            name: usuarioCliente
             shell: /bin/bash
             create_home: yes
             state: present
             groups: sudo
-            password: "{{ 'servidor' | password_hash('sha512') }}"
+            password: "{{ 'cliente' | password_hash('sha512') }}"
+
+    - name: create user otroCliente
+      user:
+            name: otroCliente
+            shell: /bin/bash
+            create_home: yes
+            state: present
+            groups: sudo
+            password: "{{ 'otro' | password_hash('sha512') }}"
 ...

@@ -1,6 +1,6 @@
 ---
  - name: Ansible server playbook
-   hosts: server
+   hosts: telnet_server
    become: true
    tasks:
     - name: Update and upgrade apt packages
@@ -11,6 +11,11 @@
     - name: Ansible install git
       apt:
             name: git
+            state: latest
+
+    - name: Install telnet server
+      apt:  
+            name: telnetd
             state: latest
 
     - name: loadkeys es
@@ -29,13 +34,3 @@
         regexp: '^XKBLAYOUT='
         line: 'XKBLAYOUT="es"'
         create: true
-
-    - name: create user usuarioServidor
-      user:
-            name: usuarioServidor
-            shell: /bin/bash
-            create_home: yes
-            state: present
-            groups: sudo
-            password: "{{ 'servidor' | password_hash('sha512') }}"
-...

@@ -12,7 +12,7 @@
       apt:
             name: git
             state: latest
-
+      
     - name: loadkeys es
       command: loadkeys es
 
