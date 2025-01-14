@@ -8,7 +8,7 @@
         run_once: yes  
     - name: Update and upgrade apt packages
       apt:
-            upgrade: yes
+            upgrade: no
             update_cache: yes
 
     - name: Ansible install git

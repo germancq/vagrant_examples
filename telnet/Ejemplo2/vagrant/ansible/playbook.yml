@@ -5,7 +5,7 @@
    tasks:
     - name: Update and upgrade apt packages
       apt:
-            upgrade: yes
+            upgrade: no
             update_cache: yes
 
     - name: Ansible install git
@@ -24,7 +24,7 @@
    tasks:
       - name: Update and upgrade apt packages
         apt:
-            upgrade: yes
+            upgrade: no
             update_cache: yes
 
  - name: Ansible setup Intruder
@@ -33,7 +33,7 @@
    tasks:
       - name: Update and upgrade apt packages
         apt:
-            upgrade: yes
+            upgrade: no
             update_cache: yes
 
       - name: Ansible install git
@@ -117,7 +117,7 @@
    become: true
    tasks:
       - name: Start Capture tshark
-        ansible.builtin.shell: tshark -i "eth1" --autostop duration:30 -w "/home/vagrant/shared/captura.pcapng" &
+        ansible.builtin.shell: tshark -i "eth1" --autostop duration:30 -w "/tmp/captura.pcapng" &
 
  - name: Start telnet comunication
    hosts: client
@@ -131,4 +131,11 @@
                     Password: "vagrant"
                     vagrant@server(.*): "exit"
         ignore_errors: true
+
+ - name: move capture
+   hosts: intruder
+   become: true
+   tasks:
+      - name: mv file
+        ansible.builtin.shell: cp -u /tmp/captura.pcapng /home/vagrant/shared/
 ...
